@@ -39,6 +39,7 @@ def primorial(n):
 #print(primes)
 #print(primorial(n))
 #print(prime(primorial(n)+1))
+print(prime(558541))
 
 print(findprimes(999))
 
