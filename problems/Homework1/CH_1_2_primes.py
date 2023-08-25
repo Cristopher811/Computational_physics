@@ -63,15 +63,5 @@ def primorial(n):
 #print(primorials)
 
 
-
-
-
-
-
-
-
-
-
-
 start_time = time.time()
 print("--- %s seconds ---" % (time.time() - start_time))
