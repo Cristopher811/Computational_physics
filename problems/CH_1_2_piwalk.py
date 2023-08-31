@@ -34,11 +34,11 @@ def piwalk(n,m):
         2: (1, 0),
         3: (1, 0),
         4: (0, 1),
-       5: (0, 1),
-       6: (-1, 0),
-       7: (-1, 0),
-       8: (0, -1),
-       9: (0, -1),
+        5: (0, 1),
+        6: (-1, 0),
+        7: (-1, 0),
+        8: (0, -1),
+        9: (0, -1),
     }
     for i in range(1,m):
         dx,dy = step_map[digits[i]]
@@ -91,38 +91,38 @@ def randomwalk(m):
     rand = []
     countx = 0
     county = 0
-    x = np.zeros(m)
-    y = np.zeros(m)
-    s = 0
+    k = m+1
+    x = np.zeros(k)
+    y = np.zeros(k)
+    total_steps = 0
     for i in range(0,m):
         rand.append(random.randint(0,9)) 
-    for i in range(0,m):
-        if rand[i] == 0 or rand[i] == 1:
-            x[i] = countx
-            y[i] = county
-        if rand[i] == 2 or rand[i] == 3:
-            x[i] = countx+1
-            y[i] = county
-            countx+=1
-            s+=1
-        elif rand[i] == 4 or rand[i] == 5:
-            x[i] = countx
-            y[i] = county + 1
-            county+=1
-            s+=1
-        elif rand[i] == 6 or rand[i] == 7:
-            x[i] = countx - 1
-            y[i] = county
-            countx-=1
-            s+=1
-        elif rand[i] == 8 or rand[i] == 9:
-            x[i] = countx
-            y[i] = county - 1
-            county-=1
-            s+=1
-    distance = math.sqrt(x[m-1]**2+y[m-1]**2)/s
-    print('Random euclidean distances to the point: ',distance)
-    print('Random step distance: ',s)
+    print(rand)
+    x[0] = 0
+    y[0] = 0
+    step_map = {
+        0: (0, 0),
+        1: (0, 0),
+        2: (1, 0),
+        3: (1, 0),
+        4: (0, 1),
+        5: (0, 1),
+        6: (-1, 0),
+        7: (-1, 0),
+        8: (0, -1),
+        9: (0, -1),
+    }
+    for i in range(1,k):
+        dx,dy = step_map[rand[i-1]]
+        if rand[i-1] != 1 and rand[i-1] != 0:
+            total_steps+=1
+        countx += dx
+        county += dy
+        x[i] = countx
+        y[i] = county
+    print(total_steps)
+    distance = np.sqrt(x[m]**2 + y[m]**2)
+    print(distance)
     return x,y
 
 
@@ -136,24 +136,24 @@ def update_color_gradient(ax, x, y,colors):
     plt.pause(0.00000000001)
 
 
-m = 10**4
+m = 10**2
 
 mp.dps = m
 n = mp.pi
 
 #print(lstdigits(n))
-x,y = piwalk(n,m)
-
-# create a figure
-fig = plt.figure()
-# create a plot into the figure
-ax = fig.add_subplot(111)
-
-colors = np.linspace(0, 1, len(x))
-
-# Plot the graph with a color gradient
-for i in range(1, len(x)):
-    ax.plot([x[i-1],x[i]], [y[i-1],y[i]], color=plt.cm.viridis(colors[i]))
+#x,y = piwalk(n,m)
+#
+## create a figure
+#fig = plt.figure()
+## create a plot into the figure
+#ax = fig.add_subplot(111)
+#
+#colors = np.linspace(0, 1, len(x))
+#
+## Plot the graph with a color gradient
+#for i in range(1, len(x)):
+#    ax.plot([x[i-1],x[i]], [y[i-1],y[i]], color=plt.cm.viridis(colors[i]))
 
 
 #num_points = len(x)
@@ -169,12 +169,17 @@ for i in range(1, len(x)):
 #ax.plot(x,y)
 
 
-#x1,y1 = randomwalk(m)
-## create a figure
-#fig = plt.figure()
-## create a plot into the figure
-#ax1 = fig.add_subplot(111)
-## plot the data
-#ax1.plot(x1,y1)
+x1,y1 = randomwalk(m)
+# create a figure
+fig = plt.figure()
+# create a plot into the figure
+ax1 = fig.add_subplot(111)
+
+colors1 = np.linspace(0, 1, len(x1))
+# plot the data
+for i in range(1, len(x1)):
+    ax1.plot([x1[i-1],x1[i]], [y1[i-1],y1[i]], color=plt.cm.viridis(colors1[i]))
+
+plt.title("Random walk")
 plt.show()
 
