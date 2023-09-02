@@ -3,24 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from bokeh.plotting import figure, show
 
-
-
-#def lstdigits(n):
-#    """
-#    Extracts the digits from a number as a list.
-#    
-#    Args:
-#        n: The number to extract digits from.
-#    
-#    Returns:
-#        A list containing the digits of the number.
-#    """
-#    digits = []
-#    while n > 0:
-#        digits.append(n%10)
-#        n //= 10
-#        return digits[::-1]
-
 def lstdigits(n):
     n = str(n)
     if '.' in n:
@@ -28,8 +10,6 @@ def lstdigits(n):
     digits = list(n)
     digits = [int(i) for i in digits]
     return digits
-
-
 
 def update_color_gradient_bokeh(p, x, y, colors):
     """

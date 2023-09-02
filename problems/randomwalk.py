@@ -1,5 +1,4 @@
 from mpmath import mp
-import math
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
@@ -40,26 +39,33 @@ def randomwalk(m):
         if rand[i-1] != 1 and rand[i-1] != 0:
             step +=1
             distance.append(np.sqrt(x[i]**2+y[i]**2))
-    # create a figure
-    fig = plt.figure()
-    for i in range(0,len(distance)):
+    
+    l = len(distance)
+    for i in range(0,l):
         average += distance[i]
-    # create a plot into the figure
+
     average = average/step
-    print(step)
+    print(distance)
     print(average)
-    ax = fig.add_subplot(111)
-    ax.plot(distance)
-    plt.axhline(y=average, color='r', linestyle='-')
-    plt.title("Average distance to the origin (d = {})".format(m))
-    ax.set_ylabel("Average distance to the origin")
-    ax.set_xlabel("Step")
+    print(step)
+
+#    # create a figure
+#    fig = plt.figure()
+#    # create a plot into the figure
+#    average = average/step
+#    ax = fig.add_subplot(111)
+#    ax.plot(distance)
+#    plt.axhline(y=distance[-1], color='r', linestyle='-')
+#    plt.title("Distance to the origin (d = {})".format(m))
+#    ax.set_ylabel("Distance to the origin per step")
+#    ax.set_xlabel("Step")
     return x,y
 
 
-m = 10**6
-
+m = 10
 x1,y1 = randomwalk(m)
+
+
 # create a figure
 fig = plt.figure()
 # create a plot into the figure
@@ -82,4 +88,5 @@ cbar.set_ticklabels(['Beginning', 'End'])
 plt.title("Random-walk")
 
 plt.show()
+
 

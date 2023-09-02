@@ -21,7 +21,7 @@ def piwalk(n,m):
     y = np.zeros(k)
     countx = 0
     county = 0
-    total_steps = 0
+    step = 0
     x[0] = countx
     y[0] = county
     distance = [0]
@@ -45,19 +45,20 @@ def piwalk(n,m):
         x[i] = countx
         y[i] = county
         if digits[i-1] != 1 and digits[i-1] != 0:
+            step += 1
             distance.append(np.sqrt(x[i]**2+y[i]**2))
     # create a figure
-    fig = plt.figure()
-    # create a plot into the figure
-    ax = fig.add_subplot(111)
-
-    ax.set_xlabel('Step')
-    ax.set_ylabel('Average distance')
-
-    ax.plot(distance)
+#    fig = plt.figure()
+#    # create a plot into the figure
+#    ax = fig.add_subplot(111)
+#
+#    ax.set_xlabel('Step')
+#    ax.set_ylabel('Average distance')
+#
+#    ax.plot(distance)
     return x,y
 
-m = 10**3
+m = 10**4
 
 mp.dps = m
 n = mp.pi
