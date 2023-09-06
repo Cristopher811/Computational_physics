@@ -36,18 +36,18 @@ def randomwalk(m):
         county += dy
         x[i] = countx
         y[i] = county
-        if rand[i-1] != 1 and rand[i-1] != 0:
-            step +=1
-            distance.append(np.sqrt(x[i]**2+y[i]**2))
+#        if rand[i-1] != 1 and rand[i-1] != 0:
+#            step +=1
+#            distance.append(np.sqrt(x[i]**2+y[i]**2))
     
-    l = len(distance)
-    for i in range(0,l):
-        average += distance[i]
-
-    average = np.floor(average/step)
-    formated_output = f"{average}"
-    with open("output.txt","a") as file:           # Open the file in append mode
-        file.write(formated_output + "\n")         # Write the pair variables and a newline character
+#    l = len(distance)
+#    for i in range(0,l):
+#        average += distance[i]
+#
+#    average = np.floor(average/step)
+#    formated_output = f"{average}"
+#    with open("output.txt","a") as file:           # Open the file in append mode
+#        file.write(formated_output + "\n")         # Write the pair variables and a newline character
 
 #    # create a figure
 #    fig = plt.figure()
@@ -62,34 +62,32 @@ def randomwalk(m):
     return x,y
 
 
-m = 10**4
+m = 10**3
 k = 0
-while k<10**4:
-    x1,y1 = randomwalk(m)
-    k+=1
+x1,y1 = randomwalk(m)
 
 
-# create a figure
-#fig = plt.figure()
-## create a plot into the figure
-#ax1 = fig.add_subplot(111)
-#
-#colors1 = np.linspace(0, 1, len(x1))
-## plot the data
-#for i in range(1, len(x1)):
-#    ax1.plot([x1[i-1],x1[i]], [y1[i-1],y1[i]], color=plt.cm.viridis(colors1[i]))
-#
-## Add color bar with tick labels
-#cmap = plt.cm.viridis
-#norm = plt.Normalize(0, 1)
-#sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
-#sm.set_array([]) # Dummy array for color mapping
-#cbar = plt.colorbar(sm, ax=ax1)
-#cbar.set_ticks([0, 1])
-#cbar.set_ticklabels(['Beginning', 'End'])
-#
-#plt.title("Random-walk")
-#
-#plt.show()
+#create a figure
+fig = plt.figure()
+# create a plot into the figure
+ax1 = fig.add_subplot(111)
+
+colors1 = np.linspace(0, 1, len(x1))
+# plot the data
+for i in range(1, len(x1)):
+    ax1.plot([x1[i-1],x1[i]], [y1[i-1],y1[i]], color=plt.cm.viridis(colors1[i]))
+
+# Add color bar with tick labels
+cmap = plt.cm.viridis
+norm = plt.Normalize(0, 1)
+sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
+sm.set_array([]) # Dummy array for color mapping
+cbar = plt.colorbar(sm, ax=ax1)
+cbar.set_ticks([0, 1])
+cbar.set_ticklabels(['Beginning', 'End'])
+
+plt.title("Random-walk")
+
+plt.show()
 
 

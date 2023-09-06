@@ -1,9 +1,6 @@
 from mpmath import mp
-import math
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 import numpy as np
-import random  
 
 def lstdigits(n):
     n = str(n)
@@ -57,6 +54,9 @@ def piwalk(n,m):
     print(average)
     print(distance[-1])
 
+
+## To take the average of walkings:
+
 #    formated_output = f"{average}"
 #    with open("output2.txt","a") as file:           # Open the file in append mode
 #        file.write(formated_output + "\n")         # Write the pair variables and a newline character   
@@ -71,34 +71,35 @@ def piwalk(n,m):
 #    ax.plot(distance)
     return x,y
 
-m = 10**6
-k = 0
+m = 10**3
 mp.dps = m
 n = mp.pi
 
 x,y = piwalk(n,m)
 
-## create a figure
-#fig = plt.figure()
-## create a plot into the figure
-#ax = fig.add_subplot(111)
-#
-#colors = np.linspace(0, 1, len(x))
-#
-## Plot the graph with a color gradient
-#for i in range(1, len(x)):
-#    ax.plot([x[i-1],x[i]], [y[i-1],y[i]], color=plt.cm.viridis(colors[i]))
-#
-#
-## Add color bar with tick labels
-#cmap = plt.cm.viridis
-#norm = plt.Normalize(0, 1)
-#sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
-#sm.set_array([]) # Dummy array for color mapping
-#cbar = plt.colorbar(sm, ax=ax)
-#cbar.set_ticks([0, 1])
-#cbar.set_ticklabels(['Beginning', 'End'])
-#
-#plt.title("Pi-walk")
-#plt.show()
+## Uncoment the following lines to plot the walk
+
+# create a figure
+fig = plt.figure()
+# create a plot into the figure
+ax = fig.add_subplot(111)
+
+colors = np.linspace(0, 1, len(x))
+
+# Plot the graph with a color gradient
+for i in range(1, len(x)):
+    ax.plot([x[i-1],x[i]], [y[i-1],y[i]], color=plt.cm.viridis(colors[i]))
+
+
+# Add color bar with tick labels
+cmap = plt.cm.viridis
+norm = plt.Normalize(0, 1)
+sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
+sm.set_array([]) # Dummy array for color mapping
+cbar = plt.colorbar(sm, ax=ax)
+cbar.set_ticks([0, 1])
+cbar.set_ticklabels(['Beginning', 'End'])
+
+plt.title("Pi-walk")
+plt.show()
 
