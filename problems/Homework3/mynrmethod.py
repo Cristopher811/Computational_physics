@@ -1,5 +1,6 @@
 import mpmath as mp
 from mpmath import *
+import matplotlib.pyplot as plt
 mp.dps = 1200; mp.pretty = True
 
 # Context from Function problems/Homework3/pidigits.py:df
@@ -13,6 +14,8 @@ def df(x):
 
 #create a function that gives you an aproximation of pi using the Newton-Raphson method
 def pi(x0,nmax,tol):
+    value = []
+    ite = []
     x = x0
     if mp.fabs(df(x))<tol:
         dx = 0
@@ -29,7 +32,7 @@ def pi(x0,nmax,tol):
         else:
             dx = f(x)/df(x)
         x0 = x
+        value.append(x0)
+        ite.append(nn)
     x = x0
-
-    return x
-
+    return ite,value
