@@ -45,52 +45,14 @@ for i in range(0,len(ite)):
     convergencenr.append(mp.fabs(mp.pi-values[i]))
 
 
-    
-
 # Plot the rate of convergence
-plt.plot(range(0, n_ite), convergencebbp)
-plt.plot(range(0,n_ite), convergencenr)
+plt.plot(range(0, n_ite), convergencebbp,label='BBP convergence rate')
+plt.plot(range(0,n_ite), convergencenr,label='NR convergence rate')
 plt.yscale("log")
 plt.xscale("log")
 plt.xlabel('Number of iterations')
 plt.ylabel('Error')
-plt.title('Rate of Convergence of BBP series')
+plt.title('Rate of Convergence to $\pi$')
 plt.grid(True)
+plt.legend()
 plt.show()
-
-
-
-
-
-
-
-
-
-## Calculate the successive approximations of pi using both methods
-#newton_pi_approximations = []
-#bbp_pi_approximations = []
-#
-#for i in range(1, 100):
-#    newton_pi_approximations.append(nr.pi(22/7, i, 1e-1200))
-#    bbp_pi_approximations.append(calculate_pi())
-#
-## Compute the differences between the successive approximations
-#differences = []
-#for i in range(0, len(newton_pi_approximations)):
-##    differences.append(mp.fabs(newton_pi_approximations[i]/bbp_pi_approximations[i]))
-#    differences.append(mp.fabs(bbp_pi_approximations[i]/newton_pi_approximations[i]))
-#
-## Calculate the rate of convergence
-#convergence_rate = [] 
-#for i in range(0, len(differences)):
-#    convergence_rate.append(mp.log(differences[i]))
-#
-##convergence_rate = mp.log(differences[:-1] / differences[1:]) / np.log(2)
-#
-## Plot the rate of convergence
-#plt.plot(range(1, 100), convergence_rate)
-#plt.xlabel('Number of iterations')
-#plt.ylabel('Rate of convergence')
-#plt.title('Rate of Convergence of Newton-Raphson Method')
-#plt.grid(True)
-#plt.show()
