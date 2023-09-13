@@ -39,10 +39,10 @@ def pi(x0,nmax,tol):
     return ite,value
 
 
-n_ite = pi(22/7,10**3,1e-1200)[-1]
-value = pi(22/7,10**3,1e-1200)[1]
-
-l = len(value)-2
+#n_ite = pi(22/7,10**3,1e-1200)[-1]
+#value = pi(22/7,10**3,1e-1200)[1]
+#
+#l = len(value)-2
 
 # calculate the order of convergence of the method 
 
