@@ -1,7 +1,8 @@
 from mpmath import mp
+import matplotlib
+#matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import mynrmethod as nr
-import numpy as np
 
 # Set the decimal places to a high value
 mp.dps = 1200
@@ -30,8 +31,6 @@ pi_value = calculate_pi()
 convergencebbp = []
 for i in range(0,n_ite):
     convergencebbp.append(mp.fabs(mp.pi-pi_value[i]))
-
-
 
 # convergence of NR method
 values = []
