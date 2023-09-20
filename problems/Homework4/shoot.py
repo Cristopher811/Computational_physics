@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint 
-import sys
 
 # define schrödinger equation
 def sch(y, x, beta, epsilon):
@@ -11,7 +10,7 @@ def sch(y, x, beta, epsilon):
 
 # evolve the schrödinger equation
 def evolve(L, beta, epsilon):
-    phi0 = [1,0.0] #initial condition for phi(y)
+    phi0 = [0.0,1.0] #initial condition for phi(y)
     x = np.linspace(0,L,501)
     from scipy.integrate import odeint
     sol = odeint(sch, phi0, x, args=(beta, epsilon))
@@ -27,7 +26,7 @@ val1 = []
 val2 = []
 for j in range(nmax):
     epsilon = epsmin + (epsmax-epsmin)*j/(nmax-1)
-    val2.append(np.log(abs(evolve(L,beta,epsilon))))
+    val2.append(np.log(abs(evolve(L,beta,epsilon))))    #(np.log(abs(evolve(L,beta,epsilon))))
     val1.append(epsilon)
 
 
@@ -37,26 +36,33 @@ def f(eguess):
     return f
 
 #implements the bisection method
-def bisection(f, xl, xr, tol):
-    while (xr - xl) / 2.0 > tol:
-        xm = (xl + xr) / 2.0
-        if f(xm) == 0:
-            return xm
-        elif f(xl)*f(xm) < 0:
-            xr = xm
+def bisection(x0,xf,nmax,tol):
+    xm = 0
+    for i in range(nmax):
+        f0 = f(x0)
+        xm = (x0 + xf) / 2.0
+        fm = f(xm)
+        if f(xf)*f(x0) > 0:
+            return None
+        if fm == 0 or abs(x0 - xf) < tol:
+            break
+        if f0*fm < 0:
+            xf = xm
         else:
-            xl = xm
-    return (xl + xr) / 2.0
+            x0 = xm
+    return xm
 
 
-xl = -1.0
-xr = -0.8
-tol = 1e-6
+tol = 1e-100
+xl = -0.2
+xr = 0.0
 
-root = bisection(f,xl,xr,tol) #it works!! :)
+root = bisection(xl,xr,1000,tol)
 print(root)
 
 plt.plot(val1,val2)
+plt.xlabel('$\epsilon$')
+plt.ylabel('$\log(|\phi(20)|)$')
 plt.show()
 
 
