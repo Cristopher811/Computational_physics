@@ -17,21 +17,38 @@ def generate_random_D_and_points(N, max_coordinate=100):
     return distance_matrix, points
 
 # Example usage:
-N = 10  # Number of points
+N = 50  # Number of points
 max_coordinate = 100  # Maximum coordinate for random points
 
-distance_matrix, random_points = generate_random_D_and_points(N, max_coordinate)
+def euclidean_distance(point1, point2):
+    x1, y1 = point1
+    x2, y2 = point2
+    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+
+def generate_distance_matrix(positions):
+    num_points = len(positions)
+    distance_matrix = [[0.0 for _ in range(num_points)] for _ in range(num_points)]
+
+    for i in range(num_points):
+        for j in range(num_points):
+            if i != j:
+                distance = euclidean_distance(positions[i], positions[j])
+                distance_matrix[i][j] = distance
+
+    return distance_matrix
+
+
 
 # Print the random points in the desired format
-print("Random Points:")
-for i, point in enumerate(random_points):
-    print(f"({point[0]}, {point[1]}),")
-
-print("\nDistance Matrix:")
-# Print the distance matrix in the desired format
-for row in distance_matrix:
-    print("[", end=" ")
-    for dist in row:
-        print(f"{dist:.2f},", end=" ")
-    print("],")
-
+print(generate_random_D_and_points(N,max_coordinate)[1])
+#for i, point in enumerate(random_points):
+#    print(f"({point[0]}, {point[1]}),")
+#
+#print("\nDistance Matrix:")
+## Print the distance matrix in the desired format
+#for row in distance_matrix:
+#    print("[", end=" ")
+#    for dist in row:
+#        print(f"{dist:.2f},", end=" ")
+#    print("],")
+#
