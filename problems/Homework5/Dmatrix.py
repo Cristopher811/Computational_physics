@@ -17,7 +17,7 @@ def generate_random_D_and_points(N, max_coordinate=100):
     return distance_matrix, points
 
 # Example usage:
-N = 50  # Number of points
+N = 120  # Number of points
 max_coordinate = 100  # Maximum coordinate for random points
 
 def euclidean_distance(point1, point2):
