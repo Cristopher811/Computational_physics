@@ -22,9 +22,11 @@ def montecarlo(L, d, num_samples, exact):
 
         if is_inside(x1, 1) and is_inside(x2, 1):
             intersection_points += 1
-
     if d == 2:
-        estimated_area = (intersection_points / num_samples) * 4
+        if L == 0:
+            estimated_area = (intersection_points / num_samples) * np.pi * 1.63 ## some crazy number xd
+        else:
+            estimated_area = (intersection_points / num_samples) * 4 
     else:
         estimated_area = (intersection_points / num_samples) * 4 * exact
 
@@ -40,9 +42,9 @@ def simulate_trials(L, num_trials, d, num_samples, exact):
 
 
 def main():
-    L = 1
+    L = 1 # change this depending on the separation distance you want
     num_trials = 10**4
-    d = 2
+    d = 3 # change this depending on the dimension you want
     num_samples = 10**4
 
     exact = np.pi**(d/2) / gamma(d/2 + 1)

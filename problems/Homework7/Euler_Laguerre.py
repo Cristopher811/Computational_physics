@@ -16,6 +16,8 @@ def f(x):
     return mp.fmul(mp.exp(-x),mp.ln(x))
 def g(x):
     return mp.fdiv(mp.sin(x),x)
+def h(x):
+    return mp.fmul(mp.exp(-x),mp.power(x,-0.5))
 
 n= 61 # number of points
 dgt = 10 # digits
@@ -24,6 +26,6 @@ ngl = np.array(gl,dtype = object)
 
 integral = 0
 for i in range(n):
-    integral += g(ngl[0][i])*ngl[1][i]*mp.exp(ngl[0][i])
+    integral += h(ngl[0][i])*ngl[1][i]*mp.exp(ngl[0][i])
 
 print(integral)
