@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from numba import jit
 
 L = 0.5 # separation distance
-d = 10 # dimension of the problem
+d = 3 # dimension of the problem
 num_samples = 10**4
 trials = 10**3
 
@@ -39,30 +39,7 @@ def montecarlo_method(L,d,num_samples):
         sum_after = sum_after0(point,d)
         if np.sqrt((point[0]+L/2)**2 + sum_after) < 1 and np.sqrt((point[0]-L/2)**2 + sum_after) < 1:
             count += 1
-
     return exact*count/num_samples
-#    if d == 2:
-#        exact_area = 2*abs(x_limit)*2*abs(yzw_limit)
-#        for _ in range(num_samples):
-#            point = generate_points(L,d)
-#            if np.sqrt((point[0]+L/2)**2 + point[1]**2) < 1 and np.sqrt((point[0]-L/2)**2 + point[1]**2) < 1:
-#                count += 1
-#        return exact_area*count/num_samples
-#    if d == 3:
-#        exact_volume = 2**d*(abs(x_limit)*abs(yzw_limit)*abs(yzw_limit))
-#        for _ in range(num_samples):
-#            point = generate_points(L,d)
-#            if np.sqrt((point[0]+L/2)**2 + point[1]**2 + point[2]**2) < 1 and np.sqrt((point[0]-L/2)**2 + point[1]**2 + point[2]**2) < 1:
-#                count += 1
-#        return exact_volume*count/num_samples
-#    if d == 4:
-#        exact_volume = 2**d*(abs(x_limit)*abs(yzw_limit)*abs(yzw_limit)*abs(yzw_limit))
-#        for _ in range(num_samples):
-#            point = generate_points(L,d)
-#            if np.sqrt((point[0]+L/2)**2 + point[1]**2 + point[2]**2 + point[3]**2) < 1 and np.sqrt((point[0]-L/2)**2 + point[1]**2 + point[2]**2 + point[3]**2) < 1:
-#                count += 1
-#        return exact_volume*count/num_samples
-
 
 @jit(nopython=True)
 def run_trials(L,d,num_samples,trials):
