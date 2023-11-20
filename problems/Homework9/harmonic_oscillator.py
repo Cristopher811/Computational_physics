@@ -10,12 +10,13 @@ m = 1
 
 def construct_hamiltonian(N, hbar, m, omega):
     # defining the grid
-    x = np.linspace(-100,100,N)
+    x = np.linspace(-10,10,N)
+    y = np.linspace(-10,10,N)
     # find the spacing between the grid
     h = x[1] - x[0]
 
     kinetic_energy_matrix = (1/h**2)*(hbar**2/2*m)*(np.diag(-1*np.ones(N-1), k=-1) + np.diag(2*np.ones(N),k=0) + np.diag(-1*np.ones(N-1), k=1))
-    harmonic_potential_matrix = np.diag((0.5*m*omega**2*x**2)*np.ones(N))
+    harmonic_potential_matrix = np.diag((0.5*m*omega**2*(x**2+y**2))*np.ones(N))
     hamiltonian_matrix = harmonic_potential_matrix + kinetic_energy_matrix
     eigenvalues,eigenvectors = np.linalg.eigh(hamiltonian_matrix)
     
@@ -25,7 +26,9 @@ eigenvalues,eigenvectors = construct_hamiltonian(N, hbar, m, omega)
 
 x_values = np.linspace(-1, 1, N)  
 
-plt.plot(x_values,-1*eigenvectors[:,0],label='Numerical (adjusted)')
+normalized_eigenvectors = eigenvectors/np.linalg.norm(eigenvectors,axis=0)
+
+plt.plot(x_values,-1*normalized_eigenvectors[:,0],label='Numerical (adjusted)')
 plt.title('Harmonic Oscillator Eigenfunctions')
 plt.xlabel('x')
 plt.ylabel('Wave function')
