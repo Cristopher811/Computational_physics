@@ -4,6 +4,8 @@ from scipy.sparse.linalg import eigsh
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import griddata
+from scipy.interpolate import Rbf
+
 
 def LAPLA2D(n0):
     nmax = n0
@@ -21,15 +23,30 @@ def LAPLA2D(n0):
         else:
             return 0
 
+    # Initializing KX0 and KY0 arrays
+    KX0 = [0]*((2 * nmax - 1)**2)
+    KY0 = [0]*((2 * nmax - 1)**2)
 
     # Initializing KX and KY arrays
     KX = [0]*((2 * nmax - 1)**2)
     KY = [0]*((2 * nmax - 1)**2)
-
+    XX = [0]*((2 * nmax - 1)**2)
+    YY = [0]*((2 * nmax - 1)**2)
+    
+    npoints = 0;
+    
     # Associating a single index to each grid point
     for q in range(0, (2 * nmax - 1)**2):
-        KX[q] = DATA[q][0]
-        KY[q] = DATA[q][1]
+        KX0[q] = DATA[q][0]
+        KY0[q] = DATA[q][1]
+
+        XX[q] = KX0[q]*h
+        YY[q] = KY0[q]*h
+
+        if XX[q] < 0 or YY[q] < 0 and XX[q] >= 0:
+            npoints += 1
+            KX[npoints] = KX0[q]
+            KY[npoints] = KY0[q]
 
     def kronecker_delta(ki,kj):
         if ki == kj:
@@ -41,7 +58,7 @@ def LAPLA2D(n0):
     vec = []
 
     # Loop to calculate matrix elements and populate vec
-    for r in range(0, (2 * nmax - 1)**2):
+    for r in range(0, npoints):
         for q in range(0, r):
             mat = -der2(KX[q],KX[r]) * kronecker_delta(KY[q], KY[r]) - der2(KY[q],KY[r]) * kronecker_delta(KX[q], KX[r])
             if abs(mat) > 0:
@@ -89,16 +106,13 @@ def LAPLA2D(n0):
 #    print(f"{k} {eigenvalues[0]}")
 
 # numerical results
-
-nmax = 40
+nmax = 50
 L = 1
-h = 1/2/nmax
+h = 1 / (2 * nmax)
 DATA = LAPLA2D(nmax)
+n0 = 1
 
-def xx(k,nn,l):
-    return k/nn*l/2
-
-_,EGVEC = eigsh(DATA[2], k=100, which='SA', maxiter=40)
+_, EGVEC = eigsh(DATA[2], k=100, which='SA', maxiter=40)
 
 EGVECord = {}
 
@@ -106,13 +120,22 @@ EGVECord = {}
 for j in range(100):
     EGVECord[j + 1] = EGVEC[:, j]
 
-
 # Compute eigenvalues using eigsh
 eigenvalues, _ = eigsh(DATA[2], k=100, which='SA')
 
 # Order the eigenvalues in ascending order
 EGVAL = np.sort(eigenvalues)
 
+# CWF function definition
+def CWF(x, y, n0):
+    return np.sum(
+        EGVECord[n0][p - 1] *
+        tent(DATA[1][p - 1][0] / h, nmax, L, x) *
+        tent(DATA[1][p - 1][1] / h, nmax, L, y)
+        for p in range(1, DATA[0] + 1)
+    ) / (L / 2 / nmax)
+
+# Tent function definition
 def tent(k, NN, L, x):
     if x <= xx(k - 1, NN, L) and x >= xx(k, NN, L):
         return (x - xx(k - 1, NN, L)) / (xx(k, NN, L) - xx(k - 1, NN, L))
@@ -121,35 +144,32 @@ def tent(k, NN, L, x):
     else:
         return 0
 
-
-# n0 specifies which eigenfunction is being considered
-n0 = 100
-
-# CWF function definition
-def CWF(x, y):
-    return np.sum(
-        EGVECord[n0][p - 1] *
-        tent(DATA[1][p - 1][0] / h, nmax, L, x) *
-        tent(DATA[1][p - 1][1] / h, nmax, L, y)
-        for p in range(1, DATA[0] + 1)
-    )/(L / 2 / nmax)
-
-# Piecewise potential function
-#def V(x, y, L):
-#    return np.piecewise(x, [np.abs(x) >= L, np.abs(y) >= L], [1, 0])
+# xx function definition
+def xx(k, NN, L):
+    return k / NN * L / 2
 
 # Generate grid points
 x_vals = np.linspace(-L/2, L/2, 100)
 y_vals = np.linspace(-L/2, L/2, 100)
 X, Y = np.meshgrid(x_vals, y_vals)
 
-# Evaluate CWF and V on the grid
-Z_CWF = np.vectorize(CWF)(X, Y)
+# Evaluate CWF on the grid
+Z_CWF = np.zeros_like(X)
+for i in range(X.shape[0]):
+    for j in range(X.shape[1]):
+        Z_CWF[i, j] = CWF(X[i, j], Y[i, j], n0)
+
+# Create a 3D plot using RBF interpolation
+rbf = Rbf(X.flatten(), Y.flatten(), Z_CWF.flatten(), function='cubic')
+xi = np.linspace(-L/2, L/2, 100)
+yi = np.linspace(-L/2, L/2, 100)
+XI, YI = np.meshgrid(xi, yi)
+ZI = rbf(XI.flatten(), YI.flatten())
 
 # Create a 3D plot
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.plot_surface(X, Y, Z_CWF, cmap='rainbow')
+ax.plot_surface(XI, YI, ZI.reshape(XI.shape), cmap='rainbow')
 
 # Set labels
 ax.set_xlabel('X')
